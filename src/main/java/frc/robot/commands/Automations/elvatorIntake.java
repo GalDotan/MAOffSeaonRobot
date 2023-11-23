@@ -10,8 +10,6 @@ import frc.robot.commands.Automations.Elvator.setSetPoint;
 import frc.robot.commands.Automations.Intake.runIntake;
 import frc.robot.subsystems.Elvator.Elvator;
 import frc.robot.subsystems.Intake.Intake;
-import frc.robot.subsystems.Intake.IntakeConstants;
-import frc.robot.subsystems.Intake.Intake.GamePice;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

@@ -9,19 +9,14 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import com.ma5951.utils.MAShuffleboard;
-import com.ma5951.utils.MAShuffleboard.pidControllerGainSupplier;
-import com.ma5951.utils.subsystem.DefaultControlSubsystemInSubsystemControl;
-import com.ma5951.utils.subsystem.MotorSubsystem;
-
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import com.ma5951.utils.subsystem.DefaultInternallyControlledSubsystem ;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.PortMap;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.Intake.GamePice;
 
-public class Elvator extends SubsystemBase implements DefaultControlSubsystemInSubsystemControl{
+public class Elvator extends SubsystemBase implements DefaultInternallyControlledSubsystem {
   /** Creates a new Cubeshotter. */
   private CANSparkMax master;
   private CANSparkMax slave;
@@ -147,5 +142,7 @@ public class Elvator extends SubsystemBase implements DefaultControlSubsystemInS
 
   @Override
   public void periodic() {
+    board.addNum("SetPoint", setPoint);
+    board.addNum("ScoringPose", scoringPose);
   }
 }

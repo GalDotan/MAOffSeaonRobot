@@ -7,9 +7,6 @@ package frc.robot.commands.Automations.Elvator;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Elvator.Elvator;
-import frc.robot.subsystems.Elvator.ElvatorConstants;
-import frc.robot.subsystems.Intake.Intake;
-import frc.robot.subsystems.Intake.Intake.GamePice;
 
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more

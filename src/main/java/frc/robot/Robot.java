@@ -4,14 +4,12 @@
 
 package frc.robot;
 
-import com.ma5951.utils.commands.DefaultControlCommandInSubsystemControl;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Elvator.Elvator;
-
+import frc.robot.subsystems.Elvator.ElvatorConstants;
+import com.ma5951.utils.commands.DefaultRunInternallyControlledSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -33,7 +31,9 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    Elvator.getInstance();
+    CommandScheduler.getInstance().setDefaultCommand(
+        Elvator.getInstance(), new DefaultRunInternallyControlledSubsystem(
+            Elvator.getInstance(), ElvatorConstants.minPose));
   }
 
   /**
