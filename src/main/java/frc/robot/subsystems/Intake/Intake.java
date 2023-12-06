@@ -20,10 +20,12 @@ public class Intake extends SubsystemBase implements MotorSubsystem{
   private MAShuffleboard board;
   private CANSparkMax intakeMotor;
   private DigitalInput sensor;
-  private Enum gamePice;
-  private Timer time;
+  private GamePice gamePice;
+  //private Timer time;
   private boolean timerOn;
-
+  private String gamepic;
+  private double currentTime;
+  private double Lastcheck;
 
   public enum GamePice {
     Cone ,
@@ -38,10 +40,16 @@ public class Intake extends SubsystemBase implements MotorSubsystem{
     
     
     intakeMotor.setIdleMode(IdleMode.kBrake);
+    intakeMotor.setInverted(false);
+
+    gamePice = GamePice.None;
       
+    currentTime = Timer.getFPGATimestamp();
+
+    timerOn = false;
   }
 
-  public double getIntakePower(Enum gamepice) {
+  public double getIntakePower(GamePice gamepice) {
     if (gamepice == GamePice.Cone) {
       return IntakeConstants.IntakePowerForCone;
     } else {
@@ -49,19 +57,27 @@ public class Intake extends SubsystemBase implements MotorSubsystem{
     }
   }
 
+  public double getEjectPower(GamePice gamepice) {
+    if (gamepice == GamePice.Cone) {
+      return IntakeConstants.EjectPowerForCone;
+    }
+    return IntakeConstants.EjectPowerForCube;
+  }
+
+
   public boolean getSensor() {
-    return sensor.get();
+    return !sensor.get();
   }
 
   public double getCurrent() {
     return intakeMotor.getOutputCurrent();
   }
 
-  public void setGamePice(Enum gamepice) {
+  public void setGamePice(GamePice gamepice) {
     gamePice = gamepice;
   }
 
-  public Enum getGamePice() {
+  public GamePice getGamePice() {
     return gamePice;
   }
 
@@ -88,15 +104,22 @@ public class Intake extends SubsystemBase implements MotorSubsystem{
 
   @Override
   public void periodic() {
+
+    currentTime = Timer.getFPGATimestamp();
     
-    if ( getCurrent() > IntakeConstants.currentAmpThreshold && !timerOn) {
-      time.reset();
+    if (getCurrent() > IntakeConstants.currentAmpThreshold && !timerOn) {
+      Lastcheck = Timer.getFPGATimestamp();
       timerOn = true;
     }
-  
-    if (getCurrent() > IntakeConstants.currentAmpThreshold && time.hasElapsed(IntakeConstants.currentTimer)) {
+
+    if (getCurrent() > IntakeConstants.currentAmpThreshold && 
+      currentTime >= Lastcheck + IntakeConstants.currentTimer
+      && timerOn) {
       setGamePice(GamePice.Cone);
+      timerOn = false;
     }
+
+
 
     if (getSensor()) {
       setGamePice(GamePice.Cube);
@@ -104,5 +127,15 @@ public class Intake extends SubsystemBase implements MotorSubsystem{
 
     
 
+    if (getGamePice() == GamePice.Cone) {
+      gamepic = "cone";
+    } else if (getGamePice() == GamePice.Cube) {
+      gamepic = "cube";
+    } else {
+      gamepic = "None";
+    }
+    
+    board.addString("GamePice", gamepic);
+    board.addNum("GetCurrent", getCurrent());
   }
 }

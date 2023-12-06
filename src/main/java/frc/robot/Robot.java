@@ -86,6 +86,7 @@ public class Robot extends TimedRobot {
     
     // CommandScheduler.getInstance().setDefaultCommand(Cubeshotter.getInstance(), new SetPrecntPID(0));
 
+    Elvator.getInstance().setSetPoint(Elvator.getInstance().getPose());
   }
 
   /** This function is called periodically during operator control. */

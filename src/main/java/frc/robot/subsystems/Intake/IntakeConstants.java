@@ -7,10 +7,10 @@ package frc.robot.subsystems.Intake;
 /** Add your docs here. */
 public class IntakeConstants {
 
-    public static final double currentAmpThreshold = 40;
+    public static final double currentAmpThreshold = 30;
 
-    public static final double IntakePowerForCube = 0.8;
-    public static final double IntakePowerForCone = -0.8;
+    public static final double IntakePowerForCube = -0.8;
+    public static final double IntakePowerForCone = 0.8;
     public static final double currentTimer = 0.2;
 
     public static final double EjectPowerForCube = -0.8;

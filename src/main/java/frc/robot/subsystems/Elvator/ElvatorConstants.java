@@ -21,7 +21,7 @@ public class ElvatorConstants {
     public static final double kD = 6;
 
     public static final double lowerPower = -0.3;
-    public static final double currentAmpThreshold = 20;
+    public static final double currentAmpThreshold = 35;
    
    
     public static final double ShelfPose = 1.36 + offset ;

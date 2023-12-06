@@ -48,7 +48,7 @@ public class Elvator extends SubsystemBase implements DefaultInternallyControlle
     master.setIdleMode(IdleMode.kBrake);
     slave.setIdleMode(IdleMode.kBrake);
 
-    master.setInverted(false);
+    master.setInverted(true);
     slave.follow(master, true);
 
     pidController = master.getPIDController();
@@ -59,10 +59,10 @@ public class Elvator extends SubsystemBase implements DefaultInternallyControlle
     pidController.setI(ElvatorConstants.kI);
     pidController.setD(ElvatorConstants.kD);
 
-    
+    scoringPose = 0;
   }
 
-  public double getHight(Enum pose) {
+  public double getHightfromPose(Pose pose) {
     if (pose == Pose.High) {
       if (Intake.getInstance().getGamePice() == GamePice.Cone) {
         return ElvatorConstants.highPoseCone;
@@ -114,8 +114,8 @@ public class Elvator extends SubsystemBase implements DefaultInternallyControlle
     return Math.abs(getPose() - setPoint) <= ElvatorConstants.Tolorance;
   }
   
-  public void setSetPoint(double setPoint) {
-    this.setPoint = setPoint;
+  public void setSetPoint(double setpoint) {
+    setPoint = setpoint;
   }
 
   
@@ -144,5 +144,6 @@ public class Elvator extends SubsystemBase implements DefaultInternallyControlle
   public void periodic() {
     board.addNum("SetPoint", setPoint);
     board.addNum("ScoringPose", scoringPose);
+    board.addNum("Current position", getPose());
   }
 }

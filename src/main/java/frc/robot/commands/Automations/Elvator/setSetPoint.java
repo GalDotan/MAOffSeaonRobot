@@ -4,6 +4,8 @@
 
 package frc.robot.commands.Automations.Elvator;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Elvator.Elvator;
@@ -13,11 +15,11 @@ import frc.robot.subsystems.Elvator.Elvator;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class setSetPoint extends SequentialCommandGroup {
   /** Creates a new setSetPoint. */
-  public setSetPoint(double setpoint) {
+  public setSetPoint(Supplier<Double> setpoint) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new InstantCommand(() ->Elvator.getInstance().setSetPoint(setpoint))
+      new InstantCommand(() -> Elvator.getInstance().setSetPoint(setpoint.get()))
     );
   }
 }

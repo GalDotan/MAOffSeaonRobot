@@ -6,6 +6,7 @@ package frc.robot.commands.Automations.Intake;
 
 import com.ma5951.utils.commands.MotorCommand;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.IntakeConstants;
@@ -13,38 +14,37 @@ import frc.robot.subsystems.Intake.Intake.GamePice;
 
 public class ejectAutomation extends CommandBase {
   /** Creates a new ejectAutomation. */
-  private Enum gamePice;
   private double power;
+  private Command command;
 
-  public ejectAutomation(Enum gamePice) {
+  public ejectAutomation() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (gamePice == GamePice.Cone) {
-      power = IntakeConstants.EjectPowerForCone;
-    } else {
-      power = IntakeConstants.EjectPowerForCube;
-    }
+    power = Intake.getInstance().getEjectPower(Intake.getInstance().getGamePice());
+    command = new MotorCommand(Intake.getInstance(), power, 0);
+    command.initialize();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    new MotorCommand(Intake.getInstance(), power, 0);
+    command.execute();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     Intake.getInstance().setGamePice(GamePice.None);
+    command.end(interrupted);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return command.isFinished();
   }
 }

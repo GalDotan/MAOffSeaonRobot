@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.Automations.Elvator.setSetPoint;
 import frc.robot.commands.Automations.Intake.runIntake;
 import frc.robot.subsystems.Elvator.Elvator;
+import frc.robot.subsystems.Elvator.Elvator.Pose;
 import frc.robot.subsystems.Intake.Intake;
+import frc.robot.subsystems.Intake.Intake.GamePice;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -18,17 +20,17 @@ public class elvatorIntake extends SequentialCommandGroup {
   /** Creates a new elvatorIntake. */
   public double power;
   
-  public void setIntakePower(Enum gamepice) {
+  public void setIntakePower(GamePice gamepice) {
     power = Intake.getInstance().getIntakePower(gamepice);
   }
   
 
-  public elvatorIntake(Enum gamepice , Enum pose) {
+  public elvatorIntake(GamePice gamepice , Pose pose) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
       new InstantCommand(() -> setIntakePower(gamepice)),
-      new setSetPoint(Elvator.getInstance().getHight(pose)),
+      new setSetPoint(() ->Elvator.getInstance().getHightfromPose(pose)),
       new runIntake(gamepice)
     );
   }

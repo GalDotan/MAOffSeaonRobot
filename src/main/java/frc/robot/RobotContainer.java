@@ -16,7 +16,6 @@ import frc.robot.commands.Automations.Intake.ejectAutomation;
 import frc.robot.commands.Automations.Intake.runIntake;
 import frc.robot.subsystems.Elvator.Elvator;
 import frc.robot.subsystems.Elvator.ElvatorConstants;
-import frc.robot.subsystems.Intake.Intake;
 import frc.robot.subsystems.Intake.Intake.GamePice;
 import frc.robot.subsystems.Elvator.Elvator.Pose;
 
@@ -48,19 +47,24 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    ps4Controller.povUp().onTrue(new setScoringPose(Pose.High));
-    ps4Controller.povRight().onTrue(new setScoringPose(Pose.Mid));
-    ps4Controller.povDown().onTrue(new setScoringPose(Pose.Low));
+    
+    ps4Controller.povUp().whileTrue(new setScoringPose(Pose.High));
+    ps4Controller.povRight().whileTrue(new setScoringPose(Pose.Mid));
+    ps4Controller.povDown().whileTrue(new setScoringPose(Pose.Low));
+    ps4Controller.povLeft().whileTrue(new setScoringPose(Pose.Floor));
 
-    ps4Controller.circle().whileTrue(new setSetPoint(Elvator.getInstance().getScroingPose()));
-    ps4Controller.triangle().whileTrue(new ejectAutomation(Intake.getInstance().getGamePice()))
-    .whileFalse(new setSetPoint(ElvatorConstants.minPose));
+    ps4Controller.circle().whileTrue(new setSetPoint(() ->Elvator.getInstance().getScroingPose()));
+    ps4Controller.triangle().whileTrue(new ejectAutomation())
+    .whileFalse(new setSetPoint(() ->ElvatorConstants.minPose));
     ps4Controller.cross().whileTrue(new elvatorIntake(GamePice.Cone, Pose.Shelf));
 
     ps4Controller.L1().whileTrue(new runIntake(GamePice.Cube));
-    ps4Controller.L1().whileTrue(new runIntake(GamePice.Cone));
+    ps4Controller.R1().whileTrue(new runIntake(GamePice.Cone));
 
     ps4Controller.square().whileTrue(new resetPose());
+
+  
+
   }
 
   /**
